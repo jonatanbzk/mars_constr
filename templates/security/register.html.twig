@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card text-center">
+        <h1 class="h3 mb-3 font-weight-normal">Créer un compte</h1>
+        {{ form(registrationForm) }}
+        <a id="linkRegisterPage" href="{{ path('app_login') }}" class="btn
+        btn-sm
+        btn-outline-danger">Annuler</a>
+    </div>
+{% endblock %}

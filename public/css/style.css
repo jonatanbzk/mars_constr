@@ -1,0 +1,26 @@
+body {
+    background-color: #ebf0f5;
+}
+
+.card {
+    margin: 5em auto;
+    width: 20em;
+    padding: 2em;
+}
+
+#inputUsername, #inputPassword {
+    margin-bottom: 1em;
+}
+
+#linkRegisterPage {
+    width: 8em;
+    margin: auto;
+}
+
+#linkLoginPage {
+ margin-top: 2em;
+}
+
+#linkLogout {
+    color: red;
+}
