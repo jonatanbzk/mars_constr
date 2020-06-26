@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'NavBar/NavBar.html.twig' %}
+    <h2 class="mt-4 mb-4 text-center">Liste des compagnons</h2>
+    <table class="table table-striped" id="workerTable">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Position</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for worker in pagination %}
+            <tr>
+                <td>{{ worker.lastName }}</td>
+                <td>{{ worker.firstName }}</td>
+                <td>{{ worker.rank }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+     </table>
+    <div class="pagination pagination-sm justify-content-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock  %}

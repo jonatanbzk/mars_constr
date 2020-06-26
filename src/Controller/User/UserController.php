@@ -53,8 +53,8 @@ class UserController extends AbstractController
             $this->manager->persist($user);
             $this->manager->flush();
 
-            $this->addFlash('success', 'You have been 
-            registered, please check your email');
+            $this->addFlash('success', 'Votre compte a été créé');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/register.html.twig', [

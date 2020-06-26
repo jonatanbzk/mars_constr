@@ -24,3 +24,8 @@ body {
 #linkLogout {
     color: red;
 }
+
+#workerTable {
+    margin: auto;
+    max-width: 80%;
+}
