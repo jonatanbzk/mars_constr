@@ -2,26 +2,31 @@
 
 {% block body %}
     {% include 'NavBar/NavBar.html.twig' %}
-    <h2 class="mt-4 mb-4 text-center">Liste des compagnons</h2>
-    <table class="table table-striped" id="workerTable">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Position</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for worker in pagination %}
-            <tr>
-                <td>{{ worker.lastName }}</td>
-                <td>{{ worker.firstName }}</td>
-                <td>{{ worker.rank }}</td>
-            </tr>
+    <div class="container mt-2">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
         {% endfor %}
-        </tbody>
-     </table>
-    <div class="pagination pagination-sm justify-content-center">
-        {{ knp_pagination_render(pagination) }}
+        <div id="btnEmployeeList">
+            <div class="btn-group mt-2" role="group">
+                <button type="button" class="btn btn-info" id="btnWorkers"
+                        onclick="toggleEmployeeTab('workers')">Liste des compagnons
+                </button>
+                <button type="button" class="btn btn-outline-info" id="btnManagers"
+                        onclick="toggleEmployeeTab('managers')">Liste de
+                l'encadrement
+                </button>
+            </div>
+            {% if is_granted("ROLE_RH") %}
+            <div id="btnAddWorker">
+                <a href="{{ path('employee_workerAdd') }}"
+                   class="btn btn-primary btn-sm">Ajouter un compagnon</a>
+            </div>
+            {% endif %}
+        </div>
+        {% include 'employee/workersTable.html.twig' %}
+        {% include 'employee/managersTable.html.twig' %}
     </div>
 {% endblock  %}
+

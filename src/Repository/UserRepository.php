@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -36,8 +37,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * @return Query
+     */
+    public function findAllQuery(): Query
+    {
+        $query = $this->createQueryBuilder('user')
+            ->orderBy('user.last_name');
+        return $query->getQuery();
+    }
+
     // /**
-    //  * @return User[] Returns an array of User objects
+    //  * @return user[] Returns an array of user objects
     //  */
     /*
     public function findByExampleField($value)
@@ -54,7 +65,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     */
 
     /*
-    public function findOneBySomeField($value): ?User
+    public function findOneBySomeField($value): ?user
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')

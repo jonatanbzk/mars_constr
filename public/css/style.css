@@ -25,7 +25,34 @@ body {
     color: red;
 }
 
-#workerTable {
-    margin: auto;
-    max-width: 80%;
+.alert {
+    margin: 2em auto;
+    max-width: 30em;
+    text-align: center;
+}
+
+.pagination>li>a.active {
+    background-color: orange !important;
+}
+
+.tdFormPrivilege {
+    width: 35%;
+}
+
+.tdEraseManager {
+    width: 15%;
+}
+
+.tdBtnLink {
+    width: 10%;
+}
+
+#btnEmployeeList {
+    display: flex;
+    justify-content: space-between;
+}
+
+#formAddWorker {
+    margin: 2em auto;
+    width: 20em;
 }

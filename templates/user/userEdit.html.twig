@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'NavBar/NavBar.html.twig' %}
+    <div class="container mt-2">
+        <h3 class="text-center mt-4">Éditer mon compte</h3>
+        <div id="formAddWorker">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -6,7 +6,9 @@ namespace App\Controller\User;
 
 use App\Entity\User;
 use App\Form\User\UserRegisterType;
+use App\Form\User\UserEditType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,6 +61,39 @@ class UserController extends AbstractController
 
         return $this->render('security/register.html.twig', [
             'registrationForm' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("userEdit/{id}", name="userEdit")
+     * @param User $user
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return Response
+     */
+    public function editUser(User $user, Request $request,
+                               UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $form = $this->createForm(UserEditType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!empty($form->get('password')->getData())) {
+                // encode the plain password
+                $user->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
+                );
+            }
+            $user->setUsername($form->get('first_name')->getData() . '.' .
+            $form->get('last_name')->getData());
+            $this->manager->flush();
+            $this->addFlash('success', 'Paramètres modifiés.');
+            return $this->redirectToRoute('homepage');
+        }
+        return $this->render('user/userEdit.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

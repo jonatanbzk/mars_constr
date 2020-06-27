@@ -1,0 +1,50 @@
+<div id="workersTab" style="display: block">
+    <table class="table table-striped" id="workerTable">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Position</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for worker in paginationWorkers %}
+            <tr>
+                <td>{{ worker.lastName | capitalize }}</td>
+                <td>{{ worker.firstName | capitalize }}</td>
+                <td>{{ worker.rank | capitalize }}</td>
+                {% if is_granted("ROLE_RH") %}
+                    <td class="tdBtnLink">
+                        <div id="btnAddWorker">
+                            <a href="{{ path('employee_workerEdit',
+                                {id:worker.id}) }}"
+                               class="btn btn-primary btn-sm">Éditer</a>
+                        </div>
+                    </td>
+                    <td class="tdBtnLink">
+                        <form method="post"
+                              action="{{ path('employee_workerRemove',
+                                  {id: worker.id}) }}"
+                              onsubmit="return confirm(
+                              'Êtes-vous sûr(e) de vouloir supprimer cet ' +
+                               'employé(e) ?' );">
+                            <input type="hidden" name="_method"
+                                   value="DELETE">
+                            <input type="hidden" name="_token"
+                                   value="{{ csrf_token('delete' ~ worker.id) }}">
+                            <button class="btn btn-outline-danger btn-sm"
+                                    id="eraseWord"
+                                    type="submit">
+                                Supprimer
+                            </button>
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination pagination-sm justify-content-center">
+        {{ knp_pagination_render(paginationWorkers) }}
+    </div>
+</div>

@@ -44,6 +44,11 @@ class User implements UserInterface
      */
     private $last_name;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Grade;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class User implements UserInterface
     public function setLastName(string $last_name): self
     {
         $this->last_name = $last_name;
+
+        return $this;
+    }
+
+    public function getGrade(): ?string
+    {
+        return $this->Grade;
+    }
+
+    public function setGrade(?string $Grade): self
+    {
+        $this->Grade = $Grade;
 
         return $this;
     }

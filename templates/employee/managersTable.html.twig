@@ -1,0 +1,119 @@
+<div id="managersTab" style="display: none">
+    <table class="table table-striped" id="managerTable">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Poste</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in paginationUsers %}
+            <tr>
+                <td>{{ user.lastName | capitalize }}</td>
+                <td>{{ user.firstName | capitalize }}</td>
+                <td>{{ user.grade }}</td>
+                {% if is_granted('ROLE_RH') %}
+                <td class="tdFormPrivilege">
+                    <a data-toggle="collapse"
+                       href="#collapseExample{{ loop.index }}"
+                       role="button" aria-expanded="false"
+                       aria-controls="collapseExample{{ loop.index }}">
+                        Éditer les permissions et fonction
+                    </a>
+                    <div class="collapse" id="collapseExample{{ loop.index }}">
+                        <form method="post" action=
+                        "{{ path('employee_managerUpdate',{id: user.id}) }}">
+                            <div>
+                                <div>
+                                    <p class="mb-1 mt-2">Permission(s) :</p>
+                                    <input type="checkbox" id="checkRH"
+                                           name="role_rh" value="ROLE_RH"
+                                            {% if "ROLE_RH" in user.getRoles %}
+                                                checked
+                                            {% endif %}>
+                                    <label for="checkRH">Ressources humaines
+                                    </label>
+                                    <br>
+                                    <input type="checkbox" id="checkConduitTRV"
+                                           name="role_conduct_trvx"
+                                           value="ROLE_CONDUCT_TRVX"
+                                            {% if "ROLE_CONDUCT_TRVX"
+                                                in user.getRoles %} checked
+                                            {% endif %} >
+                                    <label for="checkConduitTRV">
+                                        Conduite de travaux
+                                    </label>
+                                    <br>
+                                    <input type="checkbox" id="checkMateriel"
+                                           name="role_resp_materiel"
+                                           value="ROLE_RESP_MATERIEL"
+                                            {% if "ROLE_RESP_MATERIEL" in
+                                                user.getRoles %}checked
+                                            {% endif %}>
+                                    <label for="checkMateriel">Gestion matériel
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="fonction">Fonction :</label>
+                                    <br>
+                                    <select class="mb-3" name="fonction"
+                                            id="fonctionSelect">
+                                        <option value="">Fonction</option>
+                                        <option value="RH" {% if user
+                                            .getGrade is same as("RH") %}
+                                                selected="selected"
+                                        {% endif %}>RH
+                                        </option>
+                                        <option value="Conducteur de travaux"
+                                                {% if user.getGrade is same as(
+                                                    "Conducteur de travaux") %}
+                                            selected="selected"
+                                                {% endif %}>
+                                            Conducteur de travaux</option>
+                                        <option value="Chef de chantier"
+                                                {% if user.getGrade is same as(
+                                                    "Chef de chantier") %}
+                                            selected="selected"
+                                                {% endif %}>
+                                            Chef de chantier</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" name="_token"
+                                       value="{{ csrf_token('updateManager' ~
+                                           user.id) }}">
+                            </div>
+                            <div>
+                                <button class="btn btn-primary btn-sm"
+                                        type="submit">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+                <td class="tdEraseManager">
+                    <form method="post"
+                          action="{{ path('employee_managerRemove',
+                              {id: user.id}) }}"
+                          onsubmit="return confirm(
+                              'Êtes-vous sûr(e) de vouloir supprimer cet ' +
+                               'employé(e) ?' );">
+                        <input type="hidden" name="_method"
+                               value="DELETE">
+                        <input type="hidden" name="_token"
+                               value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button class="btn btn-outline-danger btn-sm"
+                                id="eraseWord"
+                              type="submit">
+                            Supprimer
+                        </button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination pagination-sm justify-content-center">
+        {{ knp_pagination_render(paginationUsers) }}
+    </div>
+</div>

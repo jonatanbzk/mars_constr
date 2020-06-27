@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'NavBar/NavBar.html.twig' %}
+    <div class="container mt-2">
+        <h3 class="text-center mt-4">Éditer un compagnon</h3>
+        <div id="formAddWorker">
+            {{ form_start(form) }}
+                {{ form_row(form.first_name) }}
+                {{ form_row(form.last_name) }}
+                {{ form_row(form.rank) }}
+
+                {{ form_row(form.submit, { 'label': 'Modifier' }) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
