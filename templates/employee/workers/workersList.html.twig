@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-2">
+        <div id="btnEmployeeList">
+            <div class="btn-group mt-2" role="group">
+                <a href="{{ path('employee_indexWorkers') }}" type="button"
+                   class="btn btn-info" id="btnWorkers">
+                    Liste des compagnons
+                </a>
+                <a href="{{ path('employee_indexManagers') }}" type="button"
+                   class="btn btn-outline-info" id="btnManagers">Liste des cadres
+                </a>
+            </div>
+            {% if is_granted("ROLE_RH") %}
+            <div class="mt-2" id="btnAddWorker">
+                <a href="{{ path('employee_workerAdd') }}"
+                   class="btn btn-primary btn-sm">Ajouter un compagnon</a>
+            </div>
+            {% endif %}
+        </div>
+        {% include 'employee/workers/workersTable.html.twig' %}
+    </div>
+{% endblock  %}
+

@@ -1,0 +1,61 @@
+<div>
+    <table class="table table-striped" id="workerTable">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Chef de chantier</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for construction in paginationConstructionSites %}
+            <tr>
+                <td>{{ construction.name | capitalize }}</td>
+                <td>
+                    {% for manager in construction.users.values %}
+                        {{ '- ' ~ manager.firstName ~ ' ' ~ manager.LastName }}
+                        <br>
+                    {% endfor %}
+                </td>
+                <td>
+                    <div>
+                        <a href="{{ path('constructionSites_display', {
+                            id:construction.id}) }}"
+                           class="btn btn-info btn-sm">Consulter</a>
+                    </div>
+                </td>
+                {% if is_granted("ROLE_CONDUCT_TRVX") %}
+                    <td class="tdBtnLink">
+                        <div>
+                            <a href="{{ path('constructionSites_edit', {
+                                id:construction.id}) }}"
+                               class="btn btn-primary btn-sm">Éditer</a>
+                        </div>
+                    </td>
+                    <td class="tdBtnLink">
+                        <form method="post"
+                              action="{{ path('constructionSites_remove',
+                                  {id:construction.id}) }}"
+                              onsubmit="return confirm(
+                              'Êtes-vous sûr(e) de vouloir supprimer ce ' +
+                               'chantier ?' );">
+                            <input type="hidden" name="_method"
+                                   value="DELETE">
+                            <input type="hidden" name="_token"
+                                   value="{{ csrf_token(
+                                       'delete' ~ construction.id) }}">
+                            <button class="btn btn-outline-danger btn-sm"
+                                    id="eraseWord"
+                                    type="submit">
+                                Supprimer
+                            </button>
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination pagination-sm justify-content-center">
+        {{ knp_pagination_render(paginationConstructionSites) }}
+    </div>
+</div>

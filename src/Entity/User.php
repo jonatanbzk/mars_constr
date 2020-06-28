@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -48,6 +50,11 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $Grade;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ConstructionSite::class, inversedBy="users")
+     */
+    private $constructionSite;
 
     public function getId(): ?int
     {
@@ -156,5 +163,22 @@ class User implements UserInterface
         $this->Grade = $Grade;
 
         return $this;
+    }
+
+    public function getConstructionSite(): ?ConstructionSite
+    {
+        return $this->constructionSite;
+    }
+
+    public function setConstructionSite(?ConstructionSite $constructionSite): self
+    {
+        $this->constructionSite = $constructionSite;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->username;
     }
 }

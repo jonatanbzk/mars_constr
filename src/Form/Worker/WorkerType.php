@@ -26,7 +26,8 @@ class WorkerType extends AbstractType
                     'N2' => 'N2',
                     'N3' => 'N3',
                     'N4' => 'N4',
-                ]
+                ],
+                'label' => 'Niveau',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Ajouter le compagnon',

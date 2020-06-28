@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-2">
+                <div id="btnConstructionAdd">
+                    <h3>Liste des chantiers</h3>
+                    {% if is_granted("ROLE_CONDUCT_TRVX") %}
+                        <a href="{{ path('constructionSites_Add') }}"
+                        class="btn btn-primary btn-sm mt-2">
+                        Ajouter un chantier</a>
+                    {% endif %}
+                </div>
+
+        {% include 'constructionSites/constructionTable.twig' %}
+    </div>
+{% endblock %}

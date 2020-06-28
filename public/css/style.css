@@ -2,6 +2,7 @@ body {
     background-color: #ebf0f5;
 }
 
+/* Login Register */
 .card {
     margin: 5em auto;
     width: 20em;
@@ -31,10 +32,7 @@ body {
     text-align: center;
 }
 
-.pagination>li>a.active {
-    background-color: orange !important;
-}
-
+/* Employees list */
 .tdFormPrivilege {
     width: 35%;
 }
@@ -52,7 +50,14 @@ body {
     justify-content: space-between;
 }
 
-#formAddWorker {
+#formAddWorker, #formAddConstruction {
     margin: 2em auto;
     width: 20em;
+}
+
+/* Construction Sites */
+#btnConstructionAdd {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2em;
 }

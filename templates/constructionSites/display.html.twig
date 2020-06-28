@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-2">
+        <div>
+            <h3>{{ site.name | capitalize }}</h3>
+            <p>Chef de chantier :
+            {% for manager in site.users.values %}
+                {{ manager.getFirstName ~ " " ~ manager.getLastName }} <br>
+
+            {% endfor %}
+
+            </p>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller\User;
+namespace App\Controller\UserController;
 
 
 use App\Entity\User;
@@ -96,5 +96,4 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }

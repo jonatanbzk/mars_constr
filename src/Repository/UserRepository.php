@@ -47,6 +47,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->getQuery();
     }
 
+    /**
+     * @return user[]
+     */
+    public function findConstructionManagers(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->Where('u.Grade = :searchParam')
+            ->setParameter('searchParam', 'Chef de chantier')
+            ->orderBy('u.first_name')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+// Conducteur de travaux
+
     // /**
     //  * @return user[] Returns an array of user objects
     //  */

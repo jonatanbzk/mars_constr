@@ -1,4 +1,4 @@
-<div id="workersTab" style="display: block">
+<div id="workersTab">
     <table class="table table-striped" id="workerTable">
         <thead>
         <tr>
@@ -14,8 +14,8 @@
                 <td>{{ worker.firstName | capitalize }}</td>
                 <td>{{ worker.rank | capitalize }}</td>
                 {% if is_granted("ROLE_RH") %}
-                    <td class="tdBtnLink">
-                        <div id="btnAddWorker">
+                    <td>
+                        <div>
                             <a href="{{ path('employee_workerEdit',
                                 {id:worker.id}) }}"
                                class="btn btn-primary btn-sm">Éditer</a>

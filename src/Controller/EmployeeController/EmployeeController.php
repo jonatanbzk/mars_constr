@@ -1,10 +1,8 @@
 <?php
 
 
-namespace App\Controller\Employee;
+namespace App\Controller\EmployeeController;
 
-
-use App\Entity\User;
 use App\Entity\Worker;
 use App\Form\Worker\WorkerType;
 use App\Repository\UserRepository;
@@ -34,61 +32,62 @@ class EmployeeController extends AbstractController
      */
     private $security;
 
-    public function __construct(EntityManagerInterface $manager, Security $security)
+    public function __construct(EntityManagerInterface $manager,
+                                Security $security)
     {
         $this->manager = $manager;
         $this->security = $security;
     }
 
-    private function getWorkers($workerRepository, $paginator, $request)
+    private function getEntityListPaginate($entityRepository, $paginator,
+                                         $request)
     {
         $currentPage = 1;
         if (isset($_GET['page'])) {
             $currentPage = (int)$_GET['page'];
         }
         return $paginator->paginate(
-            $workerRepository->findAllQuery(),
-            $request->query->getInt('page', $currentPage),
-            10
-        );
-    }
-
-    private function getManagers($userRepository, $paginator, $request)
-    {
-        $currentPage = 1;
-        if (isset($_GET['page'])) {
-            $currentPage = (int)$_GET['page'];
-        }
-        return $paginator->paginate(
-            $userRepository->findAllQuery(),
+            $entityRepository->findAllQuery(),
             $request->query->getInt('page', $currentPage),
             10
         );
     }
 
     /**
-     * @Route("/index", name="index")
+     * @Route("/indexWorkers", name="indexWorkers")
      * @param WorkerRepository $workerRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    public function indexWorkers(WorkerRepository $workerRepository,
+                             PaginatorInterface $paginator, Request $request)
+    {
+        return $this->render('employee/workers/workersList.html.twig', [
+            'paginationWorkers' => $this->getEntityListPaginate
+            ($workerRepository, $paginator, $request),
+        ]);
+    }
+
+    /**
+     * @Route("/indexManagers", name="indexManagers")
      * @param UserRepository $userRepository
      * @param PaginatorInterface $paginator
      * @param Request $request
      * @return Response
      */
-    public function index(WorkerRepository $workerRepository,
-                          UserRepository $userRepository,
-                             PaginatorInterface $paginator, Request $request)
+    public function indexManagers(UserRepository $userRepository,
+                          PaginatorInterface $paginator, Request $request)
     {
-        return $this->render('employee/employee.html.twig', [
-            'paginationWorkers' => $this->getWorkers($workerRepository,
-                $paginator, $request),
-            'paginationUsers' => $this->getManagers($userRepository, $paginator,
-                $request),
+        return $this->render('employee/managers/managersList.html.twig', [
+            'paginationUsers' => $this->getEntityListPaginate
+            ($userRepository, $paginator, $request),
         ]);
     }
 
     /**
      * @IsGranted("ROLE_RH")
-     * @Route("workerAdd", name="workerAdd")
+     * @Route("/workerAdd", name="workerAdd")
      * @param $request
      * @return RedirectResponse|Response
      */
@@ -101,16 +100,16 @@ class EmployeeController extends AbstractController
             $this->manager->persist($worker);
             $this->manager->flush();
             $this->addFlash('success', 'Compagnon ajouté.');
-            return $this->redirectToRoute('employee_index');
+            return $this->redirectToRoute('employee_indexWorkers');
         }
-        return $this->render('employee/workerAdd.html.twig', [
+        return $this->render('employee/workers/workerAdd.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
      * @IsGranted("ROLE_RH")
-     * @Route("workerEdit/{id}", name="workerEdit")
+     * @Route("/workerEdit/{id}", name="workerEdit")
      * @param Worker $worker
      * @param Request $request
      * @return RedirectResponse|Response
@@ -122,15 +121,15 @@ class EmployeeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->flush();
             $this->addFlash('success', 'Compagnon modifié.');
-            return $this->redirectToRoute('employee_index');
+            return $this->redirectToRoute('employee_indexWorkers');
         }
-        return $this->render('employee/workerEdit.html.twig', [
+        return $this->render('employee/workers/workerEdit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("workerRemove/{id}", name="workerRemove", methods="DELETE")
+     * @Route("/workerRemove/{id}", name="workerRemove", methods="DELETE")
      * @param Request $request
      * @param Worker $worker
      * @return RedirectResponse
@@ -152,7 +151,7 @@ class EmployeeController extends AbstractController
                 ' ' . $worker->getLastName() . ' a été supprimé de la base de 
                 donnée');
         }
-        return $this->redirectToRoute('employee_index');
+        return $this->redirectToRoute('employee_indexWorkers');
     }
 
     /**
@@ -181,23 +180,23 @@ class EmployeeController extends AbstractController
             if (!empty($request->get('fonction'))) {
                 $user->setGrade($request->get('fonction'));
             }
-
-            if ($user->getRoles() !== $roles) {
+            $currentRole = $user->getRoles();
+            if ($currentRole !== $roles) {
                 $user->setRoles($roles);
             }
 
             $this->manager->flush();
 
-            if ($user === $this->security->getUser() &&
-                $user->getRoles() !== $roles) {
+            if ($currentRole !== $roles && $user === $this->security->getUser()) {
                 return $this->redirectToRoute('app_logout');
             }
-            return $this->redirectToRoute('employee_index');
+            return $this->redirectToRoute('employee_indexManagers');
+
         }
     }
 
     /**
-     * @Route("managerRemove/{id}", name="managerRemove", methods="DELETE")
+     * @Route("/managerRemove/{id}", name="managerRemove", methods="DELETE")
      * @param UserRepository $userRepository
      * @param Request $request
      * @return RedirectResponse
@@ -221,7 +220,7 @@ class EmployeeController extends AbstractController
                 ' ' . $user->getLastName() . ' a été supprimé de la base de 
                 donnée');
         }
-        return $this->redirectToRoute('employee_index');
+        return $this->redirectToRoute('employee_indexManagers');
     }
 
 }

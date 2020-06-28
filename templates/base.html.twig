@@ -9,6 +9,14 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% include 'NavBar/NavBar.html.twig' %}
+    {% endif %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
         <!-- JS, Popper.js, and jQuery -->
