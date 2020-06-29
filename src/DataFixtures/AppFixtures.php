@@ -11,6 +11,9 @@ class AppFixtures extends Fixture
 {
 
 
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create('fr_FR');
@@ -22,10 +25,8 @@ class AppFixtures extends Fixture
                 $rank = "N2";
             } elseif (rand(0,100) < 70) {
                 $rank = "N3";
-            } elseif (rand(0,100) < 90) {
+            } else  {
                 $rank = "N4";
-            } else {
-                $rank = "CC";
             }
 
             $worker = new Worker();

@@ -29,9 +29,21 @@ class ConstructionSite
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Material::class, mappedBy="onSite")
+     */
+    private $materials;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Worker::class, mappedBy="onSite")
+     */
+    private $workers;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->materials = new ArrayCollection();
+        $this->workers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +88,74 @@ class ConstructionSite
             // set the owning side to null (unless already changed)
             if ($user->getConstructionSite() === $this) {
                 $user->setConstructionSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Material[]
+     */
+    public function getMaterials(): Collection
+    {
+        return $this->materials;
+    }
+
+    public function addMaterial(Material $material): self
+    {
+        if (!$this->materials->contains($material)) {
+            $this->materials[] = $material;
+            $material->setOnSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMaterial(Material $material): self
+    {
+        if ($this->materials->contains($material)) {
+            $this->materials->removeElement($material);
+            // set the owning side to null (unless already changed)
+            if ($material->getOnSite() === $this) {
+                $material->setOnSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Collection|Worker[]
+     */
+    public function getWorkers(): Collection
+    {
+        return $this->workers;
+    }
+
+    public function addWorker(Worker $worker): self
+    {
+        if (!$this->workers->contains($worker)) {
+            $this->workers[] = $worker;
+            $worker->setOnSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorker(Worker $worker): self
+    {
+        if ($this->workers->contains($worker)) {
+            $this->workers->removeElement($worker);
+            // set the owning side to null (unless already changed)
+            if ($worker->getOnSite() === $this) {
+                $worker->setOnSite(null);
             }
         }
 

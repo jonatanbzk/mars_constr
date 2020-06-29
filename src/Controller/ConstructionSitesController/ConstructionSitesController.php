@@ -3,11 +3,8 @@
 
 namespace App\Controller\ConstructionSitesController;
 
-
 use App\Entity\ConstructionSite;
-use App\Entity\Worker;
 use App\Form\Construction\ConstructionSiteType;
-use App\Form\Worker\WorkerType;
 use App\Repository\ConstructionSiteRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/constructionSites", name="constructionSites_")
+ * @Route("/constructSites", name="constructionSites_")
  */
 class ConstructionSitesController extends AbstractController
 {
@@ -60,7 +57,7 @@ class ConstructionSitesController extends AbstractController
                           PaginatorInterface $paginator, Request $request)
     {
         return $this->render(
-            'constructionSites/indexConstructionSites.html.twig', [
+            'constructSites/indexConstructionSites.html.twig', [
             'paginationConstructionSites' => $this->getConstructionListPaginate(
                 $constructionRepository, $paginator, $request),
         ]);
@@ -75,8 +72,8 @@ class ConstructionSitesController extends AbstractController
     public function display(ConstructionSite $site, Request $request)
     {
         return $this->render(
-            'constructionSites/display.html.twig', [
-                'site' => $site
+            'constructSites/display.html.twig', [
+                'site' => $site,
         ]);
     }
 
@@ -98,7 +95,7 @@ class ConstructionSitesController extends AbstractController
             return $this->redirectToRoute('constructionSites_index');
         }
         return $this->render(
-            'constructionSites/addConstructionSite.html.twig', [
+            'constructSites/addConstructionSite.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -111,7 +108,7 @@ class ConstructionSitesController extends AbstractController
      * @param UserRepository $userRepository
      * @return RedirectResponse|Response
      */
-    public function editSite(ConstructionSite $site, Request $request,
+    public function edit(ConstructionSite $site, Request $request,
                                 UserRepository $userRepository)
     {
         $formEdit = $this->createForm(ConstructionSiteType::class, $site);
@@ -121,69 +118,10 @@ class ConstructionSitesController extends AbstractController
             $this->addFlash('success', 'Chantier modifié.');
             return $this->redirectToRoute('constructionSites_index');
         }
-        $managersAvailable = [];
-        $siteManagers = [];
-        $managersList = $userRepository->findConstructionManagers();
-        foreach ($managersList as $manager) {
-            if ($manager->getConstructionSite() === null) {
-                $managersAvailable[] = $manager;
-            }
-            else if ($manager->getConstructionSite()->getId()
-                === $site->getId()) {
-                $siteManagers[] = $manager;
-            }
-        }
         return $this->render(
-            'constructionSites/editConstruction.html.twig', [
+            'constructSites/editConstruction.html.twig', [
             'formEdit' => $formEdit->createView(),
-            'managersAvailable' => $managersAvailable,
-            'siteManager' => $siteManagers,
-                'site' => $site
         ]);
-    }
-
-    /**
-     * @IsGranted("ROLE_CONDUCT_TRVX")
-     * @Route("/editManager/{id}", name="editManager")
-     * @param ConstructionSite $site
-     * @param Request $request
-     * @param UserRepository $userRepository
-     * @return RedirectResponse
-     */
-    public function editSiteManager(ConstructionSite $site, Request $request,
-                             UserRepository $userRepository)
-    {
-        $userId = $request->get('managerId');
-        $user = $userRepository->find($userId);
-
-        if (!empty($user) && $this->isCsrfTokenValid('update' . $site->getId(),
-            $request->get('_token'))) {
-            $site->addUser($user);
-            $this->manager->flush();
-        }
-        return $this->redirectToRoute('constructionSites_index');
-    }
-
-    /**
-     * @IsGranted("ROLE_CONDUCT_TRVX")
-     * @Route("/removeManager/{id}", name="removeManager", methods="DELETE")
-     * @param ConstructionSite $site
-     * @param Request $request
-     * @param UserRepository $userRepository
-     * @return RedirectResponse
-     */
-    public function removeSiteManager(ConstructionSite $site, Request $request,
-                                    UserRepository $userRepository)
-    {
-        $userId = $request->get('managerId');
-        $user = $userRepository->find($userId);
-
-        if (!empty($user) && $this->isCsrfTokenValid('remove' . $site->getId(),
-                $request->get('_token'))) {
-            $site->removeUser($user);
-            $this->manager->flush();
-        }
-        return $this->redirectToRoute('constructionSites_index');
     }
 
     /**
@@ -198,7 +136,7 @@ class ConstructionSitesController extends AbstractController
         $siteId = (int) $site->getId();
         if (!$site) {
             throw $this->createNotFoundException(
-                'No worker found for id '.$siteId
+                'No construction site found for id '.$siteId
             );
         }
         if ($siteId !== 0 && $this->isCsrfTokenValid(

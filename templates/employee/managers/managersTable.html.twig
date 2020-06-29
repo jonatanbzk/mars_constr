@@ -25,8 +25,16 @@
                         <form method="post" action=
                         "{{ path('employee_managerUpdate',{id: user.id}) }}">
                             <div>
+                                {% if user.getId is same as(app.user.id) %}
+                                <small id="permiss" class="text-muted">
+                                    Pour des raisons de sécurité, un
+                                    changement de vos permissions
+                                    entraine une déconnexion
+                                </small>
+                                {% endif %}
                                 <div>
-                                    <p class="mb-1 mt-2">Permission(s) :</p>
+                                    <p class="mb-1 mt-2" id="permiss">
+                                        Permissions :</p>
                                     <input type="checkbox" id="checkRH"
                                            name="role_rh" value="ROLE_RH"
                                             {% if "ROLE_RH" in user.getRoles %}

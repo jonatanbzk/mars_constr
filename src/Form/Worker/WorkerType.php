@@ -29,6 +29,9 @@ class WorkerType extends AbstractType
                 ],
                 'label' => 'Niveau',
             ])
+            ->add('onSite', null, [
+                'label' => 'Chantier'
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Ajouter le compagnon',
             ]);

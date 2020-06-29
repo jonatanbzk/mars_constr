@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Form\User\UserRegisterType;
 use App\Form\User\UserEditType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-2">
+        <div id="btnConstructionAdd">
+            <h3>Liste du matériels</h3>
+            {% if is_granted("ROLE_RESP_MATERIEL") %}
+                <a href="{{ path('materials_Add') }}"
+                   class="btn btn-primary btn-sm mt-2 mb-2">
+                    Ajouter</a>
+            {% endif %}
+        </div>
+    {% include 'materials/materialsTable.html.twig' %}
+
+    </div>
+{% endblock %}

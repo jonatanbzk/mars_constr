@@ -1,42 +1,42 @@
-<div id="workersTab">
+<div>
     <table class="table table-striped" id="workerTable">
         <thead>
         <tr>
             <th>Nom</th>
-            <th>Prénom</th>
-            <th>Position</th>
-            <th>Chantier</th>
+            <th>Marque</th>
+            <th>Status</th>
         </tr>
         </thead>
         <tbody>
-        {% for worker in paginationWorkers %}
+        {% for material in paginationMaterials %}
             <tr>
-                <td>{{ worker.lastName | capitalize }}</td>
-                <td>{{ worker.firstName | capitalize }}</td>
-                <td>{{ worker.rank | capitalize }}</td>
-                <td>{{ worker.onSite | capitalize }}</td>
-                {% if is_granted("ROLE_RH") or
-                    is_granted("ROLE_CONDUCT_TRVX") %}
-                    <td>
+                <td>{{ material.name | capitalize }}</td>
+                <td>{{ material.brand | capitalize }}</td>
+                {% if material.getOnSite == NULL %}
+                    <td style="color: #718C00">Disponible</td>
+                {% else %}
+                    <td style="color: #C82829">Loué</td>
+                {% endif %}
+                {% if is_granted("ROLE_RESP_MATERIEL") %}
+                    <td class="tdBtnLink">
                         <div>
-                            <a href="{{ path('employee_workerEdit',
-                                {id:worker.id}) }}"
+                            <a href="{{ path('materials_edit', {
+                                id:material.id}) }}"
                                class="btn btn-primary btn-sm">Éditer</a>
                         </div>
                     </td>
-                    {% endif %}
-                    {% if is_granted("ROLE_RH") %}
                     <td class="tdBtnLink">
                         <form method="post"
-                              action="{{ path('employee_workerRemove',
-                                  {id: worker.id}) }}"
+                              action="{{ path('materials_remove',
+                                  {id:material.id}) }}"
                               onsubmit="return confirm(
-                              'Êtes-vous sûr(e) de vouloir supprimer cet ' +
-                               'employé(e) ?' );">
+                                  'Êtes-vous sûr(e) de vouloir supprimer ce ' +
+                                   'matériel ?' );">
                             <input type="hidden" name="_method"
                                    value="DELETE">
                             <input type="hidden" name="_token"
-                                   value="{{ csrf_token('delete' ~ worker.id) }}">
+                                   value="{{ csrf_token(
+                                       'delete' ~ material.id) }}">
                             <button class="btn btn-outline-danger btn-sm"
                                     id="eraseWord"
                                     type="submit">
@@ -50,6 +50,6 @@
         </tbody>
     </table>
     <div class="pagination pagination-sm justify-content-center">
-        {{ knp_pagination_render(paginationWorkers) }}
+        {{ knp_pagination_render(paginationMaterials) }}
     </div>
 </div>

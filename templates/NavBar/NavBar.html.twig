@@ -7,14 +7,24 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
+            {% if is_granted("ROLE_RH") or
+                is_granted("ROLE_CONDUCT_TRVX") %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('employee_indexWorkers')
+                    }}">R H</a>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('constructionSites_index')
                 }}">Chantiers</a>
             </li>
+            {% if is_granted("ROLE_RESP_MATERIEL") or
+                is_granted("ROLE_CONDUCT_TRVX") %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('employee_indexWorkers')
-                }}">R H</a>
+                <a class="nav-link" href="{{ path('materials_index')
+                }}">Matériels</a>
             </li>
+            {% endif %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ app.user.firstName | capitalize ~ ' ' ~ app.user

@@ -3,13 +3,16 @@
 
 namespace App\Controller\EmployeeController;
 
+use App\Entity\User;
 use App\Entity\Worker;
+use App\Form\User\UserManagerSiteType;
 use App\Form\Worker\WorkerType;
 use App\Repository\UserRepository;
 use App\Repository\WorkerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security as sec;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +22,7 @@ use Symfony\Component\Security\Core\Security;
 
 
 /**
+ * @sec("is_granted('ROLE_RH') or is_granted('ROLE_CONDUCT_TRVX')")
  * @Route("/employee", name="employee_")
  */
 class EmployeeController extends AbstractController
@@ -27,6 +31,7 @@ class EmployeeController extends AbstractController
      * @var EntityManagerInterface
      */
     private $manager;
+
     /**
      * @var Security
      */
@@ -86,6 +91,43 @@ class EmployeeController extends AbstractController
     }
 
     /**
+     * @Route("/indexConstrSiteManagers", name="indexConstrSiteManagers")
+     * @param UserRepository $userRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    public function indexConstrSiteManagers(UserRepository $userRepository,
+                                  PaginatorInterface $paginator, Request $request)
+    {
+        return $this->render('employee/constructSiteManagers/constructSiteManagersList.html.twig', [
+            'paginationConstrManag' => $this->getEntityListPaginate
+            ($userRepository, $paginator, $request),
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_CONDUCT_TRVX")
+     * @Route("/constructManagSiteEdit/{id}", name="constructManagSiteEdit")
+     * @param User $user
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function editManagerSite(User $user, Request $request)
+    {
+        $form = $this->createForm(UserManagerSiteType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->flush();
+            $this->addFlash('success', 'Chantier modifié.');
+            return $this->redirectToRoute('employee_indexConstrSiteManagers');
+        }
+        return $this->render('employee/constructSiteManagers/editManagerSite.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @IsGranted("ROLE_RH")
      * @Route("/workerAdd", name="workerAdd")
      * @param $request
@@ -108,7 +150,6 @@ class EmployeeController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_RH")
      * @Route("/workerEdit/{id}", name="workerEdit")
      * @param Worker $worker
      * @param Request $request

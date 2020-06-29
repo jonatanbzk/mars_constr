@@ -1,0 +1,36 @@
+<div id="workersTab">
+    <table class="table table-striped" id="workerTable">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Chantier</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for manager in paginationConstrManag %}
+            {% if manager.getGrade == "Chef de chantier" %}
+            <tr>
+                <td>{{ manager.lastName | capitalize }}</td>
+                <td>{{ manager.firstName | capitalize }}</td>
+                <td>{{ manager.getConstructionSite | capitalize }}</td>
+                {% if is_granted("ROLE_CONDUCT_TRVX") %}
+                    <td>
+                        <div>
+                            <a href="{{ path('employee_constructManagSiteEdit',
+                                {id: manager.getId}) }}" class="btn btn-primary
+                                btn-sm">
+                                Assigner chantier
+                            </a>
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination pagination-sm justify-content-center">
+        {{ knp_pagination_render(paginationConstrManag) }}
+    </div>
+</div>

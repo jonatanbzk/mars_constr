@@ -11,6 +11,10 @@
                 <a href="{{ path('employee_indexManagers') }}" type="button"
                    class="btn btn-outline-info" id="btnManagers">Liste des cadres
                 </a>
+                <a href="{{ path('employee_indexConstrSiteManagers') }}" type="button"
+                   class="btn btn-outline-info" id="btnManagers">Liste des
+                    chefs de chantier
+                </a>
             </div>
             {% if is_granted("ROLE_RH") %}
             <div class="mt-2" id="btnAddWorker">

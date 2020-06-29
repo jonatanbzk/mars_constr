@@ -9,19 +9,14 @@
                     Liste des compagnons
                 </a>
                 <a href="{{ path('employee_indexManagers') }}" type="button"
-                   class="btn btn-info" id="btnManagers">Liste des cadres
+                   class="btn btn-outline-info" id="btnManagers">Liste des cadres
                 </a>
                 <a href="{{ path('employee_indexConstrSiteManagers') }}" type="button"
-                   class="btn btn-outline-info" id="btnManagers">Liste des
-                    chefs de
+                   class="btn btn-info" id="btnManagers">Liste des chefs de
                     chantier
                 </a>
             </div>
-            {% if is_granted("ROLE_RH") %}
-
-            {% endif %}
         </div>
-        {% include 'employee/managers/managersTable.html.twig' %}
+        {% include 'employee/constructSiteManagers/constructSiteManagersTable.html.twig' %}
     </div>
 {% endblock  %}
-

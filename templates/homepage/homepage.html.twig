@@ -1,4 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="container mt-4" >
+            <div id="blockHomepage">
+                <div class="mt-5 homePageMinBlock">
+                    <a class="nav-link" href="{{ path('employee_indexWorkers')
+                    }}">
+                        <img class="homePageImg" src="{{ absolute_url(asset
+                        ('/media/hr.png'))
+                    }}" alt="constructionSite">
+                    </a>
+                    <h3 class="text-center mt-2">Ressources humaines</h3>
+                </div>
+                <div class="mt-5 homePageMinBlock">
+                    <a class="nav-link" href="{{ path('constructionSites_index') }}">
+                    <img class="homePageImg" src="{{ absolute_url(asset
+                        ('/media/newR.jpg'))
+                    }}" alt="constructionSite">
+                    </a>
+                    <h3 class="text-center mt-2">Chantiers</h3>
+                </div>
+                <div class="mt-5 homePageMinBlock">
+                    <a class="nav-link" href="{{ path('materials_index')
+                    }}">
+                    <img class="homePageImg" src="{{ absolute_url(asset
+                        ('/media/materiel.jpg'))
+                    }}" alt="constructionSite">
+                    </a>
+                    <h3 class="text-center mt-2">Matériels</h3>
+                </div>
+            </div>
+    </div>
 {% endblock %}

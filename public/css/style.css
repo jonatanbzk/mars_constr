@@ -50,7 +50,7 @@ body {
     justify-content: space-between;
 }
 
-#formAddWorker, #formAddConstruction {
+.formEdit {
     margin: 2em auto;
     width: 20em;
 }
@@ -61,3 +61,46 @@ body {
     justify-content: space-between;
     margin-top: 2em;
 }
+
+/* homepage */
+#blockHomepage {
+    display: flex;
+    ;
+}
+
+.homePageMinBlock {
+    margin: auto;
+    justify-content: space-between;
+    width: 30%;
+    height: 80%;
+}
+
+.homePageImg {
+    width: 18em;
+    height: 12em;
+}
+
+img {
+    max-width: 90%;
+}
+
+@media only screen and (max-width : 1024px) {
+    #blockHomepage {
+        flex-direction: column;
+        align-items: center;
+        width: 60%;
+        height: auto;
+        margin: auto;
+    }
+
+    .homePageMinBlock {
+        width: 80%;
+        height: auto;
+    }
+
+    .homePageImg {
+        width: 100%;
+        height: auto;
+    }
+}
+

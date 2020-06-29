@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-2">
+        <h3 class="text-center mt-4">Éditer le chantier</h3>
+        <div class="formEdit">
+            {{ form_start(formEdit) }}
+            {{ form_row(formEdit.name) }}
+            {{ form_row(formEdit.brand) }}
+            {{ form_row(formEdit.onSite) }}
+
+            {{ form_row(formEdit.submit, { 'label': 'Modifier' }) }}
+            {{ form_end(formEdit) }}
+         </div>
+    </div>
+{% endblock %}
+

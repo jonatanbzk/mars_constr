@@ -32,6 +32,11 @@ class Worker
      */
     private $rank;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ConstructionSite::class, inversedBy="workers")
+     */
+    private $onSite;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Worker
     public function setRank(string $rank): self
     {
         $this->rank = $rank;
+
+        return $this;
+    }
+
+    public function getOnSite(): ?ConstructionSite
+    {
+        return $this->onSite;
+    }
+
+    public function setOnSite(?ConstructionSite $onSite): self
+    {
+        $this->onSite = $onSite;
 
         return $this;
     }
